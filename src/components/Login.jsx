@@ -7,7 +7,7 @@ function Login() {
 
         <Nav>
             <Link to={""}>
-                <img src="/public/images/login-logo.svg" alt="LinkedIn logo" />
+                <img src="/images/login-logo.svg" alt="LinkedIn logo" />
             </Link>
             <div>
                 <Join>Join now</Join>
@@ -18,11 +18,11 @@ function Login() {
         <Section>
             <Hero>
                 <h1>Welcome to your professional community</h1>
-                <img src="/public/images/login-hero.svg" alt="hero image" />
+                <img src="/images/login-hero.svg" alt="hero image" />
             </Hero>
             <Form>
                 <Google>
-                    <img src="/public/images/google.svg" alt="google image" />
+                    <img src="/images/google.svg" alt="google image" />
                     Sign in with Google
                 </Google>
             </Form>

@@ -20,12 +20,12 @@ const Leftside = (props) => {
               <span>Connections</span>
               <span>Grow your network</span>
             </div>
-            <img src="/images/widget-icon.svg" alt="" />
+            <img src="/images/widget-icon.svg" alt="widget svg" />
           </a>
         </Widget>
         <Item>
           <span>
-            <img src="/images/item-icon.svg" alt="" />
+            <img src="/images/item-icon.svg" alt="item svg" />
             My Items
           </span>
         </Item>
@@ -38,7 +38,7 @@ const Leftside = (props) => {
         <a>
           <span>
             Events
-            <img src="/images/plus-icon.svg" alt="" />
+            <img src="/images/plus-icon.svg" alt="plus icon svg" />
           </span>
         </a>
         <a>

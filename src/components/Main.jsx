@@ -2,8 +2,14 @@ import React from 'react'
 
 function Main() {
   return (
-    <div>Main</div>
+    <Container>
+        Main
+    </Container>
   )
 }
+
+const Container = styled.div`
+    grid-area: main;
+`
 
 export default Main

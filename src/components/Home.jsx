@@ -2,10 +2,14 @@ import styled from "styled-components"
 import LeftSide from "./LeftSide";
 import Main from "./Main";
 import RightSide from "./RightSide";
+import { Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 
-function Home() {
+function Home(props) {
   return (
     <Container>
+
+        {!props.user && <Navigate to="/" />}
 
         <Section>
             <h5>
@@ -74,4 +78,10 @@ const Layout = styled.div`
   }
 `
 
-export default Home
+const mapStateToProps = (state) => {
+    return {
+        user: state.userState.user
+    };
+}
+
+export default connect(mapStateToProps)(Home)

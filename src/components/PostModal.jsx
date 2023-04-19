@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { initializeApp } from 'firebase/app'
+import { postArticleAPI } from '../actions'
+import { Timestamp } from 'firebase/firestore'
 
 function PostModal(props) {
 
@@ -24,6 +28,48 @@ function PostModal(props) {
         setVideoLink("")
         setAssetArea(area)
     }
+
+    const postArticle = (e) => {
+        e.preventDefault()
+        if(e.target !== e.currentTarget) {
+            return;
+        }
+
+        const payload = {
+            image: shareImage,
+            video: videoLink,
+            user: props.user,
+            description: editorText,
+            timestamp: Timestamp.now(),
+        }
+
+        props.postArticle(payload)
+        reset(e)
+    }
+
+    // const postArticle = async (e) => {
+    //     e.preventDefault();
+    //     if (e.target !== e.currentTarget) {
+    //       return;
+    //     }
+      
+    //     const payload = {
+    //       image: shareImage,
+    //       video: videoLink,
+    //       user: props.user,
+    //       description: editorText,
+    //       timestamp: Timestamp.now(),
+    //     };
+      
+    //     try {
+    //       const docRef = await addDoc(collection(db, "articles"), payload);
+    //       console.log("Document written with ID: ", docRef.id);
+    //     } catch (e) {
+    //       console.error("Error adding document: ", e);
+    //     }
+      
+    //     reset(e);
+    //   };
 
     const reset = (e) => {
         setEditorText("")
@@ -50,9 +96,12 @@ function PostModal(props) {
                         <SharedContent>
         
                             <UserInfo>
+                                {props.user.photoURL 
+                                    ? <img src={props.user.photoURL} /> 
+                                    : <img src="images/user.svg" alt="user" />
+                                }
                                 {/* <img src="https://media.licdn.com/dms/image/D5635AQEwXyyzfW_v5g/profile-framedphoto-shrink_100_100/0/1681201292915?e=1682470800&amp;v=beta&amp;t=hw33DgM9CjfcJXnYZE7GcaJi7EmmuurZ4uiwA-BqamA" loading="lazy" alt="Jefferson Balde" id="ember772" className="EntityPhoto-circle-2 lazy-image ember-view" /> */}
-                                <img src="images/user.svg" alt="user" />
-                                <span>Name</span>
+                                <span>{props.user.displayName}</span>
                             </UserInfo>
         
                             <Editor>
@@ -78,15 +127,15 @@ function PostModal(props) {
                                         {shareImage && <img src={URL.createObjectURL(shareImage)} />}
                                     </UploadImage>)
                                     : assetArea === "media" &&
-                                        (<>
-                                            <input 
-                                                type="text" 
-                                                placeholder='please input a video link' 
-                                                alue={videoLink} 
-                                                onChange={(e) => setVideoLink(e.target.value)}
-                                            />
-                                            {videoLink && <ReactPlayer width={'100%'} url={videoLink} />}
-                                        </>)
+                                    (<>
+                                        <input 
+                                            type="text" 
+                                            placeholder='please input a video link' 
+                                            alue={videoLink} 
+                                            onChange={(e) => setVideoLink(e.target.value)}
+                                        />
+                                        {videoLink && <ReactPlayer width={'100%'} url={videoLink} />}
+                                    </>)
                                 }
                             </Editor>   
         
@@ -95,10 +144,10 @@ function PostModal(props) {
                         <ShareCreation>
         
                             <AttachAssets>
-                                <AssetButton>
+                                <AssetButton onClick={() => switchAssetArea("image")} >
                                     <img src="images/share-image.svg" alt="share-image" />
                                 </AssetButton>
-                                <AssetButton>
+                                <AssetButton onClick={() => switchAssetArea("media")}>
                                     <img src="images/share-video.svg" alt="share-video" />
                                 </AssetButton>
                             </AttachAssets>
@@ -110,7 +159,10 @@ function PostModal(props) {
                                 </AssetButton>
                             </ShareComment>
         
-                            <PostButton disabled={!editorText ? true : false}>
+                            <PostButton 
+                                disabled={!editorText ? true : false}
+                                onClick={(event) => postArticle(event)}
+                            >
                                 Post
                             </PostButton>
         
@@ -270,4 +322,14 @@ const UploadImage = styled.div`
     }
 `
 
-export default PostModal
+const mapStateToProps = (state) => {
+    return {
+        user: state.userState.user
+    };
+  }
+  
+  const mapDispatchToProps = (dispatch) => ({
+    postArticle: (payload) => dispatch(postArticleAPI(payload))
+  });
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(PostModal)

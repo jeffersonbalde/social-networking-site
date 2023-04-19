@@ -14,13 +14,23 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider, storage } from "../firebase";
 import db from "../firebase";
-import { SET_USER } from "./actionType";
+import { GET_ARTICLES, SET_LOADING_STATUS, SET_USER } from "./actionType";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot} from "firebase/firestore";
 
 export const setUser = (payload) => ({
     type: SET_USER,
     user: payload,
+})
+
+export const setLoading = (status) => ({
+    type: SET_LOADING_STATUS,
+    status: status
+})
+
+export const getArticles = (payload) => ({
+  type: GET_ARTICLES,
+  payload: payload
 })
 
 export function signInAPI() {
@@ -100,53 +110,139 @@ export function signOutAPI() {
 //     }
 // }
 
+// export function postArticleAPI(payload) {
+//     return (dispatch) => {
+
+//         dispatch(setLoading(true))
+
+//         if (payload.image !== "") {
+//             const storageRef = ref(getStorage(), `image/${payload.image.name}`);
+//             uploadBytes(storageRef, payload.image)
+//             .then(() => {
+//                 return getDownloadURL(storageRef);
+//             })
+//             .then((downloadURL) => {
+//                 return addDoc(collection(db, "articles"), {
+//                 actor: {
+//                     description: payload.user.email,
+//                     title: payload.user.displayName,
+//                     date: payload.timestamp,
+//                     image: payload.user.photoURL,
+//                 },
+//                 video: payload.video,
+//                 sharedImg: downloadURL,
+//                 comments: 0,
+//                 description: payload.description,
+//                 });
+//             })
+//             dispatch(setLoading(false))
+            
+//             .then((docRef) => {
+//                 console.log("Document written with ID: ", docRef.id);
+//             })
+//             .catch((error) => {
+//                 console.error("Error adding document: ", error);
+//             });
+//         } else if (payload.video) {
+//             addDoc(collection(db, "articles"), {
+//             actor: {
+//                 description: payload.user.email,
+//                 title: payload.user.displayName,
+//                 date: payload.timestamp,
+//                 image: payload.user.photoURL,
+//             },
+//             video: payload.video,
+//             sharedImg: "",
+//             comments: 0,
+//             description: payload.description,
+//             })
+//             dispatch(setLoading(false))
+//             .then((docRef) => {
+//                 console.log("Document written with ID: ", docRef.id);
+//             })
+//             .catch((error) => {
+//                 console.error("Error adding document: ", error);
+//             });
+//         }
+//     };
+//   }
+
 export function postArticleAPI(payload) {
-    return (dispatch) => {
-      if (payload.image !== "") {
-        const storageRef = ref(getStorage(), `image/${payload.image.name}`);
-        uploadBytes(storageRef, payload.image)
-          .then(() => {
-            return getDownloadURL(storageRef);
-          })
-          .then((downloadURL) => {
-            return addDoc(collection(db, "articles"), {
-              actor: {
-                description: payload.user.email,
-                title: payload.user.displayName,
-                date: payload.timestamp,
-                image: payload.user.photoURL,
-              },
-              video: payload.video,
-              sharedImg: downloadURL,
-              comments: 0,
-              description: payload.description,
-            });
-          })
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          });
-      } else if (payload.video) {
-        addDoc(collection(db, "articles"), {
-          actor: {
-            description: payload.user.email,
-            title: payload.user.displayName,
-            date: payload.timestamp,
-            image: payload.user.photoURL,
-          },
-          video: payload.video,
-          sharedImg: "",
-          comments: 0,
-          description: payload.description,
+  return (dispatch) => {
+    dispatch(setLoading(true));
+    if (payload.image !== "") {
+      const storageRef = ref(getStorage(), `image/${payload.image.name}`);
+      uploadBytes(storageRef, payload.image)
+        .then(() => {
+          return getDownloadURL(storageRef);
         })
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
+        .then((downloadURL) => {
+          return addDoc(collection(db, "articles"), {
+            actor: {
+              description: payload.user.email,
+              title: payload.user.displayName,
+              date: payload.timestamp,
+              image: payload.user.photoURL,
+            },
+            video: payload.video,
+            sharedImg: downloadURL,
+            comments: 0,
+            description: payload.description,
           });
-      }
-    };
-  }
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+          dispatch(setLoading(false));
+        });
+    } else if (payload.video) {
+      addDoc(collection(db, "articles"), {
+        actor: {
+          description: payload.user.email,
+          title: payload.user.displayName,
+          date: payload.timestamp,
+          image: payload.user.photoURL,
+        },
+        video: payload.video,
+        sharedImg: "",
+        comments: 0,
+        description: payload.description,
+      })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+          dispatch(setLoading(false));
+        });
+    }
+  };
+}
+
+// export function getArticlesAPI() {
+//     return(dispatch) => {
+//         let payload
+
+//         db.collection("article")
+//         .orderBy("actor.date", "desc")
+//         .onSnapshot((snapshot) => {
+//             payload = snapshot.docs.map((doc) => doc.data())
+//             console.log(payload)
+//         })
+//     }
+// }
+
+export function getArticlesAPI() {
+  return (dispatch) => {
+    let payload;
+
+    onSnapshot(collection(db, "articles"), (snapshot) => {
+      payload = snapshot.docs.map((doc) => doc.data());
+      dispatch(getArticles(payload))
+    });
+  };
+}

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import PostModal from "./PostModal"
 
 
 function Main() {
@@ -108,6 +109,8 @@ function Main() {
             </Article>
         </div>
 
+        <PostModal />
+        
     </Container>
   )
 }

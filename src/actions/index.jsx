@@ -11,7 +11,7 @@
 //     }
 // }
 
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { SET_USER } from "./actionType";
 
@@ -37,5 +37,26 @@ export function getUserAuth() {
                 dispatch(setUser(user))
             }
         })
+    }
+}
+
+// export function signOutAPI() {
+//     return(dispatch) => {
+//         auth
+//             .signOut()
+//             .then(() => {
+//                 dispatch(setUser(null))
+//             })
+//             .catch((error) => console.log(error.message))
+//     }
+// }
+
+export function signOutAPI() {
+    return(dispatch) => {
+        signOut(auth)
+        .then(() => {
+            dispatch(setUser(null))
+        })
+        .catch((error) => console.log(error))
     }
 }

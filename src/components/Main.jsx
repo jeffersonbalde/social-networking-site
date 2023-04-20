@@ -102,7 +102,7 @@ function Main(props) {
                                 <SharedImg>
                                     <a>
                                         {!article.sharedImg && article.video 
-                                        ? (<ReactPlayer url={article.video} width={'100%'} alt={article.video} />)
+                                        ? (<ReactPlayer url={article.video} width={'100%'} className="video" alt={article.video} />)
                                         : (article.sharedImg && <img src={article.sharedImg} alt="article" />)
                                         }
                                     </a>
@@ -309,6 +309,7 @@ const SharedImg = styled.div`
         object-fit: contain;
         width: 100%;
         height: 100%;
+        max-width: 850px;
     }
 `
 

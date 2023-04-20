@@ -141,11 +141,11 @@ function Main(props) {
                                         <span>Comments</span>
                                     </button>
                                     <button>
-                                        <img src="/images/share-icon.svg" alt="share-icon-svg" />
+                                        <img src="/images/like-icon.svg" alt="share-icon-svg" />
                                         <span>Share</span>
                                     </button>
                                     <button>
-                                        <img src="/images/send-icon.svg" alt="send-icon-svg" />
+                                        <img src="/images/comment-icon.svg" alt="send-icon-svg" />
                                         <span>Send</span>
                                     </button>
                                 </SocialActions>
@@ -184,6 +184,7 @@ const ShareBox = styled(CommonCard)`
     div {
         button {
             outline: none;
+            cursor: pointer;
             color: rgba(0, 0, 0, 0.6);
             font-size: 14px;
             line-height: 1.5;
@@ -312,6 +313,7 @@ const SharedImg = styled.div`
 `
 
 const SocialCounts = styled.ul`
+    cursor: pointer;
     line-height: 1.3;
     display: flex;
     align-items: flex-start;
@@ -327,13 +329,15 @@ const SocialCounts = styled.ul`
             display: flex;
             border: none;
             background-color: white;
+            align-items: center;
+            cursor: pointer;
         }
     }
 `
 const SocialActions = styled.div`
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-start;    
     margin: 0;
     min-height: 40px;
     padding: 4px 8px;

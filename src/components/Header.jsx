@@ -11,9 +11,7 @@ function Header(props) {
             <Content>
 
                 <Logo>
-                    <Link to={"/home"}>
-                        <img src="/images/home-logo.svg" alt="linkedin logo" />
-                    </Link>
+                    <img src="/logo.png" alt="linkedin logo" />
                 </Logo>
 
                 <Search>
@@ -120,10 +118,17 @@ const Content = styled.div`
     max-width: 1128px;
     `;
 
-    const Logo = styled.span`
+const Logo = styled.span`
     margin-right: 8px;
-    font-size: 0px;
-    `;
+    /* font-size: 17px;
+    text-decoration: none; */
+    img {
+        width: 100%;
+        max-width: 60px;
+        border: white;
+        height: 55px;
+    }
+`;  
 
 const Search = styled.div`
     opacity: 1;
@@ -163,18 +168,6 @@ const SearchIcon = styled.div`
     align-items: center;
 `;
 
-const Nav = styled.nav`
-    margin-left: auto;
-    display: block;
-    @media (max-width: 768px) {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        background: white;
-        width: 100%;
-    }
-`;
-
 const NavListWrap = styled.ul`
     display: flex;
     flex-wrap: nowrap;
@@ -191,6 +184,18 @@ const NavListWrap = styled.ul`
         width: 100%;
         border-color: rgba(0, 0, 0, 0.9);
         }
+    }
+`;
+
+const Nav = styled.nav`
+    margin-left: auto;
+    display: block;
+    @media (max-width: 768px) {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        background: white;
+        width: 100%;
     }
 `;
 

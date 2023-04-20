@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { initializeApp } from 'firebase/app'
 import { postArticleAPI } from '../actions'
 import { Timestamp } from 'firebase/firestore'
 

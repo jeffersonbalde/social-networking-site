@@ -37,7 +37,7 @@ function Main(props) {
             {
                 props.articles.length === 0 ?
                 <p>There are no articles</p>
-                :
+                : (
                 <Container>
                     <ShareBox>
                         <div>
@@ -102,7 +102,7 @@ function Main(props) {
                                 <SharedImg>
                                     <a>
                                         {!article.sharedImg && article.video 
-                                        ? (<ReactPlayer width={'100%'} alt={article.video} />)
+                                        ? (<ReactPlayer url={article.video} width={'100%'} alt={article.video} />)
                                         : (article.sharedImg && <img src={article.sharedImg} alt="article" />)
                                         }
                                     </a>
@@ -149,14 +149,11 @@ function Main(props) {
                                         <span>Send</span>
                                     </button>
                                 </SocialActions>
-
                             </Article>
                         ))}
                     </Content>
-
                     <PostModal showModal={showModal} handleClick={handleClick}/>
-
-                </Container>
+                </Container>)
             }
         </>
     )
@@ -312,7 +309,6 @@ const SharedImg = styled.div`
         width: 100%;
         height: 100%;
     }
-
 `
 
 const SocialCounts = styled.ul`

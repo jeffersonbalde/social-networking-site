@@ -115,7 +115,7 @@ function PostModal(props) {
                                     (<UploadImage>
                                         <input 
                                             type="file" 
-                                            accept='image/gif, image/jpeg, image/png' 
+                                            accept='image/gif, image/jpeg, image/png, image/avif' 
                                             name='image' 
                                             id='file'
                                             style={{display: "none"}}
@@ -131,7 +131,7 @@ function PostModal(props) {
                                         <input 
                                             type="text" 
                                             placeholder='please input a video link' 
-                                            alue={videoLink} 
+                                            value={videoLink} 
                                             onChange={(e) => setVideoLink(e.target.value)}
                                         />
                                         {videoLink && <ReactPlayer width={'100%'} url={videoLink} />}
@@ -155,7 +155,7 @@ function PostModal(props) {
                             <ShareComment>
                                 <AssetButton>
                                     <img src="images/share-comment.svg" alt="share-comment" />
-                                    Anyone
+                                    <span>Anyone</span>
                                 </AssetButton>
                             </ShareComment>
         
@@ -220,6 +220,9 @@ const Header = styled.div`
         img {
             pointer-events: none;
         }
+        border: none;
+        background-color: white;
+        cursor: pointer;
     }
 `
 
@@ -273,6 +276,10 @@ const AttachAssets = styled.div`
     ${AssetButton} {
         width: 40px;
     }
+    button {
+        border: none;
+        background: white;
+    }
 `
 
 const ShareComment = styled.div`
@@ -283,6 +290,13 @@ const ShareComment = styled.div`
         svg {
             margin-right: 5px;
         }
+        span {
+        margin-left: 5px;
+    }
+    }
+    button {
+        border: none;
+        background: white;
     }
 `
 
@@ -295,6 +309,7 @@ const PostButton = styled.button`
     &:hover {
         background: ${(props) => props.disabled ? "rgba(0,0,0,0.08)" : "#004182"};
     }
+    outline: none;
 `
 
 const Editor = styled.div`
@@ -303,8 +318,8 @@ const Editor = styled.div`
         width: 100%;
         min-height: 100px;
         resize: none;
-        outline-color: rgba(0,0,0, 0.5);
-        border-color: rgba(0,0,0, 0.5);
+        outline-color: rgba(0,0,0, 0.2);
+        border-color: rgba(0,0,0, 0.2);
     }
 
     input {
